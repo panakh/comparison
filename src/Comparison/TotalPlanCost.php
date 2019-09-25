@@ -14,15 +14,33 @@ class TotalPlanCost
      */
     private $billedAmount;
 
-    private function __construct(Energy $billableUsage, Price $billedAmount)
+    public function __construct(Energy $billableUsage, Price $billedAmount)
     {
         $this->billableUsage = $billableUsage;
         $this->billedAmount = $billedAmount;
     }
 
-    public static function forConsumption(Energy $consumption): self
+    public static function forConsumption(Energy $consumption, Plan $plan, VAT $vat): self
     {
-        return new static(Energy::billableUsage($consumption), Price::zero());
+        $totalPlanCost = new static(Energy::billableUsage($consumption), Price::zero());
+        $totalPlanCost->calculateCost($plan, $vat);
+
+        return $totalPlanCost;
+    }
+
+    public function calculateCost(Plan $plan, VAT $vat)
+    {
+        /** @var CappedRate $cappedRate */
+        foreach ($plan->getCappedRates() as $cappedRate) {
+            $this->applyCappedRate($cappedRate);
+        }
+
+        if ($this->hasUnbilledUsage()) {
+            $this->applyRate($plan->getRate());
+        }
+
+        $this->applyStandingCharge($plan->getStandingCharge());
+        $this->applyVAT($vat);
     }
 
     public function applyCappedRate(CappedRate $cappedRate): void

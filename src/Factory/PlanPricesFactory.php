@@ -2,11 +2,12 @@
 
 namespace Factory;
 
-use Comparison\CappedRate;
+
 use Comparison\Energy;
 use Comparison\Plan;
 use Comparison\PlanPrice;
 use Comparison\PlanPrices;
+use Comparison\Price;
 use Comparison\TotalPlanCost;
 use Comparison\VAT;
 
@@ -17,32 +18,13 @@ class PlanPricesFactory
         $prices = new PlanPrices();
 
         foreach ($plans as $plan) {
-            $prices->addPrice($this->createPlanPriceForConsumptionUnderPlanAndVAT($consumption, $plan, $vat));
+
+            $totalPlanCost = new TotalPlanCost(Energy::billableUsage($consumption), Price::zero());
+            $totalPlanCost->calculateCost($plan, $vat);
+
+            $prices->addPrice(new PlanPrice($plan, $totalPlanCost->getBilledAmount()));
         }
 
         return $prices;
-    }
-
-    private function createPlanPriceForConsumptionUnderPlanAndVAT(Energy $consumption, Plan $plan, VAT $vat)
-    {
-        $totalPlanCost = TotalPlanCost::forConsumption($consumption);
-
-        /** @var CappedRate $cappedRate */
-        foreach ($plan->getCappedRates() as $cappedRate) {
-            $totalPlanCost->applyCappedRate($cappedRate);
-        }
-
-        if ($totalPlanCost->hasUnbilledUsage()) {
-            $totalPlanCost->applyRate($plan->getRate());
-        }
-
-        $totalPlanCost->applyStandingCharge($plan->getStandingCharge());
-
-        $totalPlanCost->applyVAT($vat);
-
-        return new PlanPrice(
-            $plan,
-            $totalPlanCost->getBilledAmount()
-        );
     }
 }
