@@ -73,27 +73,4 @@ class TotalPlanCost
     {
         return $this->billedAmount;
     }
-
-    public static function totalCostForPlanWithVAT(
-        Energy $consumption,
-        Plan $plan,
-        VAT $vat
-    ): self {
-
-        $totalPlanCost = static::forConsumption($consumption);
-
-        /** @var CappedRate $cappedRate */
-        foreach ($plan->getCappedRates() as $cappedRate) {
-            $totalPlanCost->applyCappedRate($cappedRate);
-        }
-
-        if ($totalPlanCost->hasUnbilledUsage()) {
-            $totalPlanCost->applyRate($plan->getRate());
-        }
-
-        $totalPlanCost->applyStandingCharge($plan->getStandingCharge());
-
-        $totalPlanCost->applyVAT($vat);
-        return $totalPlanCost;
-    }
 }

@@ -20,15 +20,6 @@ final class PlanPrice
         $this->price = $price;
     }
 
-    public static function forConsumptionUnderPlanAndVAT(Energy $consumption, Plan $plan, VAT $vat): self
-    {
-        return new static(
-            $plan,
-            TotalPlanCost::totalCostForPlanWithVAT($consumption, $plan, $vat)
-                ->getBilledAmount()
-        );
-    }
-
     public function getPriceInPence(): float
     {
         return $this->price->getPence();

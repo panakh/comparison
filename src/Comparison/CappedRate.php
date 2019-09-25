@@ -31,12 +31,6 @@ class CappedRate extends Rate
         return $billableUsage->getKWH() > $this->threshold->getKWH();
     }
 
-
-    public function getPriceInPence(): float
-    {
-        return $this->getPrice()->getPence();
-    }
-
     public function getTotalValue(): Price
     {
         return $this->getPrice()->addUsage($this->threshold);
