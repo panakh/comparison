@@ -18,10 +18,7 @@ class PlanPricesFactory
         $prices = new PlanPrices();
 
         foreach ($plans as $plan) {
-
-            $totalPlanCost = new TotalPlanCost(Energy::billableUsage($consumption), Price::zero());
-            $totalPlanCost->calculateCost($plan, $vat);
-
+            $totalPlanCost = TotalPlanCost::forEnergyConsumptionUnderPlanWithVAT($consumption, $plan, $vat);
             $prices->addPrice(new PlanPrice($plan, $totalPlanCost->getBilledAmount()));
         }
 

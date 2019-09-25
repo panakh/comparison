@@ -20,7 +20,7 @@ class TotalPlanCost
         $this->billedAmount = $billedAmount;
     }
 
-    public static function forConsumption(Energy $consumption, Plan $plan, VAT $vat): self
+    public static function forEnergyConsumptionUnderPlanWithVAT(Energy $consumption, Plan $plan, VAT $vat): self
     {
         $totalPlanCost = new static(Energy::billableUsage($consumption), Price::zero());
         $totalPlanCost->calculateCost($plan, $vat);
