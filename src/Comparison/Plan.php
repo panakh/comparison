@@ -25,30 +25,12 @@ class Plan
      */
     private $standingCharge;
 
-    private function __construct(Supplier $name, PlanName $plan, array $cappedRates, Rate $rate)
+    public function __construct(Supplier $name, PlanName $plan, array $cappedRates, Rate $rate)
     {
         $this->supplier = $name;
         $this->planName = $plan;
         $this->cappedRates = $cappedRates;
         $this->rate = $rate;
-    }
-
-    public static function fromArray(array $planData): self
-    {
-        $cappedRates = [];
-        $rate = null;
-
-        foreach ($planData['rates'] as $rate) {
-            if (!isset($rate['threshold'])) {
-                $rate = Rate::inPence($rate['price']);
-            } else {
-                $cappedRates[] = CappedRate::withPriceUptoThreshold(
-                    $rate['price'], $rate['threshold']
-                );
-            }
-        }
-
-        return new static(Supplier::name($planData['supplier'] ?? ''), PlanName::name($planData['plan']), $cappedRates, $rate);
     }
 
     public function getCappedRates(): array
