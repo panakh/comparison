@@ -33,9 +33,10 @@ class PriceCommandHandler
 
     public function handle(Energy $annualUsage, VAT $vat)
     {
-        $prices = $this->planPricesFactory->createPlanPricesForEnergyConsumption(
-            $annualUsage, $vat, $this->planRepository->findAll()
-        );
+        $prices = $this->planPricesFactory
+            ->createPlanPricesForEnergyConsumption(
+                $annualUsage, $vat, $this->planRepository->findAll()
+            );
 
         $prices->sortAscending();
 
