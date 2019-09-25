@@ -3,11 +3,9 @@
 namespace Command;
 
 use Comparison\PlanName;
-use Comparison\PlanRepository;
 use Comparison\Price;
 use Comparison\Supplier;
 use Comparison\VAT;
-use Output\Output;
 
 class UsageCommand
 {
@@ -23,14 +21,6 @@ class UsageCommand
      * @var float
      */
     private $monthlySpend;
-    /**
-     * @var PlanRepository
-     */
-    private $planRepository;
-    /**
-     * @var Output
-     */
-    private $fileOutput;
     /**
      * @var VAT
      */

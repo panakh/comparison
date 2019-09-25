@@ -4,8 +4,7 @@ namespace Command;
 
 use Comparison\PlanPrice;
 use Comparison\Energy;
-use Comparison\PlanPrices;
-use Comparison\PlanRepository;
+use Comparison\PlanRepositoryInterface;
 use Comparison\VAT;
 use Factory\PlanPricesFactory;
 use Output\Output;
@@ -17,7 +16,7 @@ class PriceCommandHandler
      */
     private $fileOutput;
     /**
-     * @var PlanRepository
+     * @var PlanRepositoryInterface
      */
     private $planRepository;
     /**
@@ -25,7 +24,7 @@ class PriceCommandHandler
      */
     private $planPricesFactory;
 
-    public function __construct(PlanPricesFactory $planPricesFactory, PlanRepository $planRepository, Output $fileOutput)
+    public function __construct(PlanPricesFactory $planPricesFactory, PlanRepositoryInterface $planRepository, Output $fileOutput)
     {
         $this->fileOutput = $fileOutput;
         $this->planRepository = $planRepository;

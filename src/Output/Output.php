@@ -4,9 +4,7 @@ namespace Output;
 
 use Comparison\Energy;
 use Comparison\Plan;
-use Comparison\PlanPrice;
 use Comparison\Price;
-use Comparison\Usage;
 
 class Output
 {

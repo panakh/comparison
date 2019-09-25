@@ -1,11 +1,15 @@
 <?php
 
-namespace Comparison;
+namespace Repository;
 
+use Comparison\Plan;
+use Comparison\PlanName;
+use Comparison\PlanRepositoryInterface;
+use Comparison\Supplier;
 use Factory\PlanFactory;
 use RuntimeException;
 
-class PlanRepository
+class PlanRepository implements PlanRepositoryInterface
 {
     /**
      * @var PlanFactory

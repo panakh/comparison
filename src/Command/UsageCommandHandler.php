@@ -2,11 +2,10 @@
 
 namespace Command;
 
-use Comparison\PlanRepository;
 use Comparison\PlanName;
+use Comparison\PlanRepositoryInterface;
 use Comparison\Price;
 use Comparison\Supplier;
-use Comparison\Usage;
 use Comparison\UsageCalculator;
 use Comparison\VAT;
 use Output\Output;
@@ -14,7 +13,7 @@ use Output\Output;
 class UsageCommandHandler
 {
     /**
-     * @var PlanRepository
+     * @var PlanRepositoryInterface
      */
     private $planRepository;
     /**
@@ -28,7 +27,7 @@ class UsageCommandHandler
 
     public function __construct(
         UsageCalculator $usageCalculator,
-        PlanRepository $planRepository,
+        PlanRepositoryInterface $planRepository,
         Output $fileOutput
     ) {
         $this->usageCalculator = $usageCalculator;

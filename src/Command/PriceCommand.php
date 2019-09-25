@@ -2,13 +2,8 @@
 
 namespace Command;
 
-use Comparison\TotalPlanCost;
 use Comparison\Energy;
-use Comparison\Price;
-use Comparison\Supplier;
 use Comparison\VAT;
-use Factory\PlanFactory;
-use Output\Output;
 
 class PriceCommand
 {

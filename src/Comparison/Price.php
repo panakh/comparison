@@ -2,8 +2,6 @@
 
 namespace Comparison;
 
-use Factory\TotalPlanCostFactory;
-
 final class Price
 {
     /**

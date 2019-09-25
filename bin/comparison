@@ -7,7 +7,7 @@ use Command\UsageCommand;
 use Command\UsageCommandHandler;
 use Comparison\Energy;
 use Comparison\PlanName;
-use Comparison\PlanRepository;
+use Repository\PlanRepository;
 use Comparison\Price;
 use Comparison\Supplier;
 use Comparison\UsageCalculator;
