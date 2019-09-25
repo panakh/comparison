@@ -1,0 +1,80 @@
+#!/usr/bin/php
+<?php
+
+use Command\PriceCommand;
+use Command\PriceCommandHandler;
+use Command\UsageCommand;
+use Command\UsageCommandHandler;
+use Comparison\Energy;
+use Comparison\PlanName;
+use Comparison\PlanRepository;
+use Comparison\Price;
+use Comparison\Supplier;
+use Comparison\UsageCalculator;
+use Comparison\VAT;
+use Factory\PlanFactory;
+use Factory\PlanPricesFactory;
+use Output\Output;
+
+require_once './vendor/autoload.php';
+
+$stdin = fopen('php://stdin', 'r');
+
+$planRepository = function() {
+    return PlanRepository::fromFile(new PlanFactory(),'./plans.json');
+};
+
+$usageCalculator = function() {
+    return new UsageCalculator();
+};
+
+$output = Output::toStdOut();
+
+while(true) {
+    while (($commandLine = fgets($stdin)) !== FALSE) {
+        $command = trim ($commandLine);
+        if (strpos($commandLine, 'price') === 0) {
+            $parts = explode(' ', $commandLine);
+
+            $command = new PriceCommand(
+                    Energy::inKWH($parts[1]),
+                    VAT::percentage(5)
+            );
+
+            $command->execute(
+                new PriceCommandHandler(
+                    new PlanPricesFactory(),
+                    $planRepository(),
+                    $output
+                )
+            );
+
+        }
+
+        if (strpos($commandLine, 'usage') === 0) {
+            $parts = explode(' ', $commandLine);
+
+            $command = new UsageCommand(
+                    Supplier::name($parts[1]),
+                    PlanName::name($parts[2]),
+                    Price::inPounds((float) $parts[3]),
+                    VAT::percentage(5)
+                );
+
+            $command->execute(
+                new UsageCommandHandler(
+                    $usageCalculator(),
+                    $planRepository(),
+                    $output
+                )
+            );
+
+        }
+
+        if ($command === 'exit') {
+            fclose($stdin);
+            $output->close();
+            exit(0);
+        }
+    }
+}
