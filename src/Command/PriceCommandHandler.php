@@ -14,7 +14,7 @@ class PriceCommandHandler
     /**
      * @var Output
      */
-    private $fileOutput;
+    private $output;
     /**
      * @var PlanRepositoryInterface
      */
@@ -24,9 +24,9 @@ class PriceCommandHandler
      */
     private $planPricesFactory;
 
-    public function __construct(PlanPricesFactory $planPricesFactory, PlanRepositoryInterface $planRepository, Output $fileOutput)
+    public function __construct(PlanPricesFactory $planPricesFactory, PlanRepositoryInterface $planRepository, Output $output)
     {
-        $this->fileOutput = $fileOutput;
+        $this->output = $output;
         $this->planRepository = $planRepository;
         $this->planPricesFactory = $planPricesFactory;
     }
@@ -41,7 +41,7 @@ class PriceCommandHandler
 
         /** @var PlanPrice $price */
         foreach ($prices->getPlanPrices() as $price) {
-            $this->fileOutput->writePrice($price->getPlan(), $price->getPrice());
+            $this->output->writePrice($price->getPlan(), $price->getPrice());
         }
     }
 }

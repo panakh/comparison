@@ -19,7 +19,7 @@ class UsageCommandHandler
     /**
      * @var Output
      */
-    private $fileOutput;
+    private $output;
     /**
      * @var UsageCalculator
      */
@@ -28,11 +28,11 @@ class UsageCommandHandler
     public function __construct(
         UsageCalculator $usageCalculator,
         PlanRepositoryInterface $planRepository,
-        Output $fileOutput
+        Output $output
     ) {
         $this->usageCalculator = $usageCalculator;
         $this->planRepository = $planRepository;
-        $this->fileOutput = $fileOutput;
+        $this->output = $output;
     }
 
     public function handle(Supplier $supplier, PlanName $planName, Price $monthlySpend, VAT $vat)
@@ -47,6 +47,6 @@ class UsageCommandHandler
         $usage = $this->usageCalculator->createUsageForAnnualSpendWithPlan(
             $annualSpend, $planToApply);
 
-        $this->fileOutput->writeUsage($usage);
+        $this->output->writeUsage($usage);
     }
 }
